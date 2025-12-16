@@ -16,33 +16,37 @@ int main()
     // int * p = &k;
     // printf("%d", p);
 
-    int * vetorPrincipal[10];
-    int * vetor = malloc(5 * sizeof(int));
-    int * p = &vetor[0];
-    vetorPrincipal[0] = p;
+    // int * vetorPrincipal[10];
+    // int * vetor = malloc(5 * sizeof(int));
+    // int * p = &vetor[0];
+    // vetorPrincipal[0] = p;
 
-    vetor[0] = 1;
-    vetor[1] = 2;
-    vetor[2] = 3;
-    vetor[3] = 4;
-    vetor[4] = 0;
+    // vetor[0] = 1;
+    // vetor[1] = 2;
+    // vetor[2] = 3;
+    // vetor[3] = 4;
+    // vetor[4] = 0;
 
     
-    int * testAddress = vetorPrincipal[0];
-    int test = 0;
+    // int * testAddress = vetorPrincipal[0];
+    // int test = 0;
 
-    while (*testAddress != 0)
-    {
-        test++;
-        testAddress++;
-    }
+    // while (*testAddress != 0)
+    // {
+    //     test++;
+    //     testAddress++;
+    // }
     
-    //printf("%d", test);
+    // //printf("%d", test);
 
-    printf("%d", sizeof(vetor) / sizeof(int));
+    // printf("%d", sizeof(vetor) / sizeof(int));
 
     // como funciona um ponteiro com 2 **?
     // Para minha função funcionar, eu mudei o tipo do vetor principal
+
+    int*p = malloc(3 * sizeof(int));
+    int * a = {NULL};
+    
 
 
 }
