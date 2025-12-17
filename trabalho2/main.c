@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "trabalho2.h"
-#include "trabalho2.c"
+
 
 int menu();
 
