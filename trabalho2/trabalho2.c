@@ -516,90 +516,90 @@ Retorno (No*)
     No*, ponteiro para o início da lista com cabeçote
 */
 
-List *newList()
-{
+// List *newList()
+// {
 
-    List *newList = malloc(sizeof(List));
-    newList->head = NULL;
+//     List *newList = malloc(sizeof(List));
+//     newList->head = NULL;
 
-    return newList;
-}
+//     return newList;
+// }
 
-No *create_node(int key)
-{
-    No *newNode = malloc(sizeof(No));
-    newNode->conteudo = key;
-    newNode->prox = NULL;
-    return newNode;
-}
+// No *create_node(int key)
+// {
+//     No *newNode = malloc(sizeof(No));
+//     newNode->conteudo = key;
+//     newNode->prox = NULL;
+//     return newNode;
+// }
 
-List *insertionNode(No *node, List *list)
-{
+// List *insertionNode(No *node, List *list)
+// {
 
-    if (list->head == NULL)
-    {
-        list->head = node;
-        return list;
-    }
-    else
-    {
-        No *validator = list->head;
+//     if (list->head == NULL)
+//     {
+//         list->head = node;
+//         return list;
+//     }
+//     else
+//     {
+//         No *validator = list->head;
 
-        while (validator->prox)
-        {
-            validator = validator->prox;
-        }
+//         while (validator->prox)
+//         {
+//             validator = validator->prox;
+//         }
 
-        validator->prox = node;
+//         validator->prox = node;
 
-        return list;
-    }
-}
+//         return list;
+//     }
+// }
 
-No *montarListaEncadeadaComCabecote()
-{
-    for (size_t i = 0; i < TAM; i++)
-    {
-        int *address = vetorPrincipal[i];
-        List *list = newList();
-        No *node;
+// No *montarListaEncadeadaComCabecote()
+// {
+//     for (size_t i = 0; i < TAM; i++)
+//     {
+//         int *address = vetorPrincipal[i];
+//         List *list = newList();
+//         No *node;
 
-        if (howMuchAssigned[i])
-        {
-            for (int i = 1; i <= address[0]; i++)
-            {
-                if (address[i])
-                {
-                    node = create_node(address[i]);
-                    list = insertionNode(node, list);
-                }
-                else
-                {
-                    break;
-                }
-            }
-        }
-    }
+//         if (howMuchAssigned[i])
+//         {
+//             for (int i = 1; i <= address[0]; i++)
+//             {
+//                 if (address[i])
+//                 {
+//                     node = create_node(address[i]);
+//                     list = insertionNode(node, list);
+//                 }
+//                 else
+//                 {
+//                     break;
+//                 }
+//             }
+//         }
+//     }
 
-    return NULL;
-}
+//     return NULL;
+// }
 
 /*
 Objetivo: retorna os números da lista enceada com cabeçote armazenando em vetorAux.
 Retorno void
 */
-void getDadosListaEncadeadaComCabecote(List *inicio, int vetorAux[])
-{
-    No *validator = inicio->head;
-    int i = 0;
+// void getDadosListaEncadeadaComCabecote(List *inicio, int vetorAux[])
+// {
+//     No *validator = inicio->head;
+//     int i = 0;
 
-    while (validator->prox)
-    {
-        vetorAux[i] = validator->conteudo;
-        validator = validator->prox;
-        i++;
-    }
-}
+//     while (validator->prox)
+//     {
+//         vetorAux[i] = validator->conteudo;
+//         validator = validator->prox;
+//         i++;
+//     }
+// }
 
 /*
 Objetivo: Destruir a lista encadeada com cabeçote a partir de início.
@@ -608,37 +608,37 @@ O ponteiro inicio deve ficar com NULL.
 Retorno
     void.
 */
-void destruirListaEncadeadaComCabecote(List *inicio)
-{
-    No *validator = inicio->head->prox;
+// void destruirListaEncadeadaComCabecote(List *inicio)
+// {
+//     No *validator = inicio->head->prox;
 
-    if (inicio->head == NULL)
-    {
-        free(inicio);
-    }
-    else if (validator->prox == NULL)
-    {
-        free(inicio);
-        free(validator);
-    }
-    else
-    {
-        while (validator != NULL)
-        {
-            No *next = validator->prox;
-            free(inicio);
-            free(validator);
+//     if (inicio->head == NULL)
+//     {
+//         free(inicio);
+//     }
+//     else if (validator->prox == NULL)
+//     {
+//         free(inicio);
+//         free(validator);
+//     }
+//     else
+//     {
+//         while (validator != NULL)
+//         {
+//             No *next = validator->prox;
+//             free(inicio);
+//             free(validator);
 
-            while (next)
-            {
-                validator = next->prox;
-                free(next);
-                next = validator;
-                free(validator);
-            }
-        }
-    }
-}
+//             while (next)
+//             {
+//                 validator = next->prox;
+//                 free(next);
+//                 next = validator;
+//                 free(validator);
+//             }
+//         }
+//     }
+// }
 
 /*
 Objetivo: inicializa o programa. deve ser chamado ao inicio do programa
