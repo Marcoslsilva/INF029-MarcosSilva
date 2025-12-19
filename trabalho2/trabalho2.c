@@ -21,7 +21,6 @@ Rertono (int)
 int criarEstruturaAuxiliar(int posicao, int tamanho)
 {
     int retorno = 0;
-    int *p = malloc((tamanho + 1) * sizeof(int));
     posicao--;
     // M- validações:
 
@@ -35,11 +34,6 @@ int criarEstruturaAuxiliar(int posicao, int tamanho)
     {
         retorno = JA_TEM_ESTRUTURA_AUXILIAR;
     }
-    // o tamanho ser muito grande
-    else if (p == NULL)
-    {
-        retorno = SEM_ESPACO_DE_MEMORIA;
-    }
     // o tamanho nao pode ser menor que 1
     else if (tamanho < 1)
     {
@@ -48,13 +42,20 @@ int criarEstruturaAuxiliar(int posicao, int tamanho)
     else
     {
         // deu tudo certo, crie
-
+        int *p = malloc((tamanho + 1) * sizeof(int));
         p[0] = tamanho;
 
         vetorPrincipal[posicao] = p;
         howMuchAssigned[posicao]++;
 
+        // o tamanho ser muito grande
+    if (p == NULL)
+    {
+        retorno = SEM_ESPACO_DE_MEMORIA;
+    }else{
         retorno = SUCESSO;
+    }
+
     }
 
     return retorno;
@@ -79,7 +80,7 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
 
     existeEstruturaAuxiliar = vetorPrincipal[posicao] ? 1 : 0;
 
-    posicao_invalida = ehPosicaoValida(posicao) ? posicao_invalida : 0;
+    posicao_invalida = ehPosicaoValida(posicao) != SUCESSO ? 1 : 0;
 
     if (posicao_invalida)
         retorno = POSICAO_INVALIDA;
@@ -94,6 +95,7 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
             {
                 // insere
                 p[howMuchAssigned[posicao] + 1] = valor;
+                howMuchAssigned[posicao]++;
 
                 retorno = SUCESSO;
             }
@@ -127,7 +129,7 @@ int excluirNumeroDoFinaldaEstrutura(int posicao)
     int retorno = SUCESSO;
     posicao--;
 
-    if (ehPosicaoValida(posicao))
+    if (ehPosicaoValida(posicao) != SUCESSO)
     {
         retorno = POSICAO_INVALIDA;
     }
@@ -171,7 +173,7 @@ int excluirNumeroEspecificoDeEstrutura(int posicao, int valor)
     int isNumberFound = 0;
     posicao--;
 
-    if (ehPosicaoValida(posicao))
+    if (ehPosicaoValida(posicao) != SUCESSO)
     {
         retorno = POSICAO_INVALIDA;
     }
@@ -286,7 +288,7 @@ int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[])
     int *p;
     int retorno = 0;
 
-    if (ehPosicaoValida(posicao))
+    if (ehPosicaoValida(posicao) != SUCESSO)
     {
         retorno = POSICAO_INVALIDA;
     }
@@ -302,9 +304,9 @@ int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[])
         {
             vetorAux[i - 1] = p[i];
         }
+        qsort(vetorAux, howMuchAssigned[posicao] - 1, sizeof(int), compare_ints);
     }
 
-    qsort(vetorAux, howMuchAssigned[posicao], sizeof(int), compare_ints);
 
     return retorno;
 }
