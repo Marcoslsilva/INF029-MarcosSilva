@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "trabalho2.h"
-
+#include "trabalho2.c"
 
 int menu();
 
@@ -45,7 +45,12 @@ int main()
         case 1:
         { // inserir
             // TODO
-            ret = inserirNumeroEmEstrutura(5, 25);
+            int posicao, valor;
+
+            printf("Qual a estrutura a ser inserida um valor e qual é esse valor? (Posições variam de 1 a 10)?");
+            scanf("%d %d", &posicao ,&valor);
+
+            ret = inserirNumeroEmEstrutura(posicao, valor);
             if (ret == SUCESSO)
             {
                 printf("Inserido com sucesso");
@@ -125,26 +130,29 @@ int main()
         }
 
         case 5:
-            int ret = criarEstruturaAuxiliar(8, 10);
+        int posicao, tamanho;
+            printf("Qual a posição que deve ser criada a estrutura? E qual o seu tamanho: (Posicoes variam de 1 a 10)?");
+            scanf("%d %d", &posicao, &tamanho);
+
+            int ret = criarEstruturaAuxiliar(posicao, tamanho);
+            
                 if (ret == JA_TEM_ESTRUTURA_AUXILIAR)
                 {
-                    printf("Já existe uma estrutura auxiliar nessa posição!");
-                    break;
+                    printf("Já existe uma estrutura auxiliar nessa posição! ");
                 }
-                if (ret == SEM_ESPACO_DE_MEMORIA)
+                else if (ret == SEM_ESPACO_DE_MEMORIA)
                 {
-                    printf("Não foi possível criar a estrutura, devido à falta de memória");
-                    break;
+                    printf("Não foi possível criar a estrutura, devido à falta de memória ");
                 }
-                if (ret == POSICAO_INVALIDA)
+                else if (ret == POSICAO_INVALIDA)
                 {
-                    printf("A posição é inválida!");
-                    break;
+                    printf("A posição é inválida! ");
                 }
-                if (ret == TAMANHO_INVALIDO)
+                else if (ret == TAMANHO_INVALIDO)
                 {
                     printf("O tamanho não pode ser menor que 1!");
-                    break;
+                }else if(ret == SUCESSO){
+                    printf("Estrutura criada com sucesso!");
                 }
                 
             break;

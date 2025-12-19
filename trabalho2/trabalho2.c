@@ -26,7 +26,7 @@ int criarEstruturaAuxiliar(int posicao, int tamanho)
     // M- validações:
 
     // se posição é um valor válido {entre 1 e 10}
-    if (ehPosicaoValida(posicao))
+    if (ehPosicaoValida(posicao) != SUCESSO)
     {
         retorno = POSICAO_INVALIDA;
     }
@@ -78,7 +78,7 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
     posicao--;
 
     existeEstruturaAuxiliar = vetorPrincipal[posicao] ? 1 : 0;
-   
+
     posicao_invalida = ehPosicaoValida(posicao) ? posicao_invalida : 0;
 
     if (posicao_invalida)
@@ -253,7 +253,7 @@ int getDadosEstruturaAuxiliar(int posicao, int vetorAux[])
     int *p = vetorPrincipal[posicao];
     posicao--;
 
-    if (ehPosicaoValida(posicao))
+    if (ehPosicaoValida(posicao) != SUCESSO)
     {
         retorno = POSICAO_INVALIDA;
     }
@@ -292,7 +292,7 @@ int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[])
     }
     else if (vetorPrincipal[posicao] == NULL)
     {
-        
+
         retorno = SEM_ESTRUTURA_AUXILIAR;
     }
     else
@@ -488,7 +488,7 @@ int getQuantidadeElementosEstruturaAuxiliar(int posicao)
     int retorno = 0;
     posicao--;
 
-    if (ehPosicaoValida(posicao))
+    if (ehPosicaoValida(posicao) != SUCESSO)
     {
         retorno = POSICAO_INVALIDA;
     }
@@ -516,90 +516,64 @@ Retorno (No*)
     No*, ponteiro para o início da lista com cabeçote
 */
 
-// List *newList()
-// {
+No *montarListaEncadeadaComCabecote()
+{
+    int isHeadFound = 0;
+    No *head = NULL;
+    No *prox = NULL;
 
-//     List *newList = malloc(sizeof(List));
-//     newList->head = NULL;
+    for (int i = 0; i < TAM; i++)
+    {
+        if (vetorPrincipal[i])
+        {
+            int *p = vetorPrincipal[i];
+            if (howMuchAssigned[i])
+            {
+                if (isHeadFound == 0)
+                {
+                    head->conteudo = p[1];
+                    head->prox = NULL;
+                    prox = head;
+                    isHeadFound = 1;
+                }
 
-//     return newList;
-// }
+                for(int j = 2; j <= howMuchAssigned[i]; j++)
+                {
+                    No * newNode = NULL;
+                    newNode->conteudo = p[j];
+                    newNode->prox = NULL;
+                    prox->prox = newNode;
+                    prox = newNode;
+                }
 
-// No *create_node(int key)
-// {
-//     No *newNode = malloc(sizeof(No));
-//     newNode->conteudo = key;
-//     newNode->prox = NULL;
-//     return newNode;
-// }
+            }
+        }
+    }
+    
+    if(isHeadFound){
+        return head;
+    }else{
+        return NULL;
+    }
 
-// List *insertionNode(No *node, List *list)
-// {
-
-//     if (list->head == NULL)
-//     {
-//         list->head = node;
-//         return list;
-//     }
-//     else
-//     {
-//         No *validator = list->head;
-
-//         while (validator->prox)
-//         {
-//             validator = validator->prox;
-//         }
-
-//         validator->prox = node;
-
-//         return list;
-//     }
-// }
-
-// No *montarListaEncadeadaComCabecote()
-// {
-//     for (size_t i = 0; i < TAM; i++)
-//     {
-//         int *address = vetorPrincipal[i];
-//         List *list = newList();
-//         No *node;
-
-//         if (howMuchAssigned[i])
-//         {
-//             for (int i = 1; i <= address[0]; i++)
-//             {
-//                 if (address[i])
-//                 {
-//                     node = create_node(address[i]);
-//                     list = insertionNode(node, list);
-//                 }
-//                 else
-//                 {
-//                     break;
-//                 }
-//             }
-//         }
-//     }
-
-//     return NULL;
-// }
+}
 
 /*
 Objetivo: retorna os números da lista enceada com cabeçote armazenando em vetorAux.
 Retorno void
 */
-// void getDadosListaEncadeadaComCabecote(List *inicio, int vetorAux[])
-// {
-//     No *validator = inicio->head;
-//     int i = 0;
+void getDadosListaEncadeadaComCabecote(No *inicio, int vetorAux[])
+{
+    No *validator = inicio;
+    int i = 0;
 
-//     while (validator->prox)
-//     {
-//         vetorAux[i] = validator->conteudo;
-//         validator = validator->prox;
-//         i++;
-//     }
-// }
+    while (validator->prox)
+    {
+        vetorAux[i] = validator->conteudo;
+        validator = validator->prox;
+        i++;
+    }
+}
 
 /*
 Objetivo: Destruir a lista encadeada com cabeçote a partir de início.
@@ -608,37 +582,22 @@ O ponteiro inicio deve ficar com NULL.
 Retorno
     void.
 */
-// void destruirListaEncadeadaComCabecote(List *inicio)
-// {
-//     No *validator = inicio->head->prox;
+void destruirListaEncadeadaComCabecote(No **inicio)
+{
+    No *validator = *inicio;
+    No *nextNode = validator->prox;
 
-//     if (inicio->head == NULL)
-//     {
-//         free(inicio);
-//     }
-//     else if (validator->prox == NULL)
-//     {
-//         free(inicio);
-//         free(validator);
-//     }
-//     else
-//     {
-//         while (validator != NULL)
-//         {
-//             No *next = validator->prox;
-//             free(inicio);
-//             free(validator);
+    while (nextNode)
+    {
+        free(validator);
+        validator = NULL;
+        validator = nextNode;
+        nextNode = nextNode->prox;
+    }
 
-//             while (next)
-//             {
-//                 validator = next->prox;
-//                 free(next);
-//                 next = validator;
-//                 free(validator);
-//             }
-//         }
-//     }
-// }
+    inicio = NULL;
+    
+}
 
 /*
 Objetivo: inicializa o programa. deve ser chamado ao inicio do programa
@@ -680,6 +639,7 @@ void finalizar()
     }
 }
 
-void dobrar(int *x){
+void dobrar(int *x)
+{
     *x *= 2;
 }
