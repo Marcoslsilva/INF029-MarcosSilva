@@ -14,11 +14,15 @@ int menu()
     printf("Digite as opção desejada\n");
     printf("0 - Sair\n");
     printf("1 - Inserir\n");
-    printf("2 - Excluir\n");
+    printf("2 - Excluir número específico\n");
     printf("3 - Listar uma estrutura\n");
     printf("4 - Dobrar Numero\n");
     printf("5 - Criar estrutura auxiliar\n");
-    printf("6 - \n");
+    printf("6 - excluir número do final da estrutura\n");
+    printf("7- Conseguir dados ordenados da estrutura \n");
+    printf("8 - Conseguir dados de todas as estruturas \n");
+    printf("9 - Conseguir dados ordenados de todas as estruturas \n");
+    printf("10 - Modificar tamanho da estrutura");
     scanf("%d", &op);
     return op;
 }
@@ -48,7 +52,7 @@ int main()
             int posicao, valor;
 
             printf("Qual a estrutura a ser inserida um valor e qual é esse valor? (Posições variam de 1 a 10)?");
-            scanf("%d %d", &posicao ,&valor);
+            scanf("%d %d", &posicao, &valor);
 
             ret = inserirNumeroEmEstrutura(posicao, valor);
             if (ret == SUCESSO)
@@ -68,7 +72,29 @@ int main()
 
         case 2:
         { // excluir
-            // TODO
+          // TODO
+            int posicao, num;
+            printf("Estrutura e número a ser excluído \n");
+            scanf("%d %d", &posicao, &num);
+
+            int retorno = excluirNumeroEspecificoDeEstrutura(posicao, num);
+
+            if (retorno == POSICAO_INVALIDA)
+            {
+                printf("Posição inválida \n");
+            }
+            else if (retorno == NUMERO_INEXISTENTE)
+            {
+                printf("O número não existe \n");
+            }
+            else if (retorno == SEM_ESTRUTURA_AUXILIAR)
+            {
+                printf("Estrutura auxiliar vazia \n");
+            }
+            else if (retorno == SUCESSO)
+            {
+                printf("Número excluído com sucesso \n");
+            }
             break;
         }
 
@@ -107,8 +133,16 @@ int main()
                     int i = 0;
                     for (; i < qtd; i++)
                     {
-                        printf("%d", vetorAux[i]);
+                        printf("%d \n", vetorAux[i]);
                     }
+                }
+                else if (retorno == POSICAO_INVALIDA)
+                {
+                    printf("A Posição é inválida");
+                }
+                else if (retorno == SEM_ESTRUTURA_AUXILIAR)
+                {
+                    printf("Não há estrutura auxiliar");
                 }
             }
             break;
@@ -130,32 +164,165 @@ int main()
         }
 
         case 5:
-        int posicao, tamanho;
+            int posicao, tamanho;
             printf("Qual a posição que deve ser criada a estrutura? E qual o seu tamanho: (Posicoes variam de 1 a 10)?");
             scanf("%d %d", &posicao, &tamanho);
 
             int ret = criarEstruturaAuxiliar(posicao, tamanho);
+
+            if (ret == JA_TEM_ESTRUTURA_AUXILIAR)
+            {
+                printf("Já existe uma estrutura auxiliar nessa posição! ");
+            }
+            else if (ret == SEM_ESPACO_DE_MEMORIA)
+            {
+                printf("Não foi possível criar a estrutura, devido à falta de memória ");
+            }
+            else if (ret == POSICAO_INVALIDA)
+            {
+                printf("A posição é inválida! ");
+            }
+            else if (ret == TAMANHO_INVALIDO)
+            {
+                printf("O tamanho não pode ser menor que 1!");
+            }
+            else if (ret == SUCESSO)
+            {
+                printf("Estrutura criada com sucesso!");
+            }
+
+            break;
+
+        case 6:
+
+            printf("Posição \n");
+            scanf("%d", &posicao);
+
+            ret = excluirNumeroDoFinaldaEstrutura(posicao);
+
+            if (ret == SUCESSO)
+            {
+                printf("Sucesso \n");
+                break;
+            }
+            else if (ret == SEM_ESTRUTURA_AUXILIAR)
+            {
+                printf("Sem estrutura \n");
+                break;
+            }
+            else if (ret == ESTRUTURA_AUXILIAR_VAZIA)
+            {
+                printf("Estrutura vazia \n");
+                break;
+            }
+            else if (ret == POSICAO_INVALIDA)
+            {
+                printf("Posição inválida \n");
+                break;
+            }
+
+        case 7:
+
+            int qtd;
             
-                if (ret == JA_TEM_ESTRUTURA_AUXILIAR)
+            printf("Posição \n");
+            scanf("%d", posicao);
+
+            qtd = getQuantidadeElementosEstruturaAuxiliar(posicao);
+
+            if (qtd == POSICAO_INVALIDA)
+            {
+                printf("Posição inválida\n");
+                break;
+            }
+            if (qtd == SEM_ESTRUTURA_AUXILIAR)
+            {
+                printf("Sem estrutura auxiliar\n");
+                break;
+            }
+            if (qtd == ESTRUTURA_AUXILIAR_VAZIA)
+            {
+                printf("Estrutura auxiliar vazia\n");
+                break;
+            }
+            else
+            { // existe elemento
+                int vetorAux[qtd];
+
+                int ret = getDadosOrdenadosEstruturaAuxiliar(posicao, vetorAux);
+
+                if (ret == SUCESSO)
                 {
-                    printf("Já existe uma estrutura auxiliar nessa posição! ");
+                    for (int i = 0; i < qtd; i++)
+                    {
+                        printf("%d \n", vetorAux[i]);
+                    }
+
+                    break;
+                    
                 }
-                else if (ret == SEM_ESPACO_DE_MEMORIA)
+                else if (ret == SEM_ESTRUTURA_AUXILIAR)
                 {
-                    printf("Não foi possível criar a estrutura, devido à falta de memória ");
+                    printf("Sem estrutura \n");
+                    break;
+                }
+                else if (ret == ESTRUTURA_AUXILIAR_VAZIA)
+                {
+                    printf("Estrutura vazia \n");
+                    break;
                 }
                 else if (ret == POSICAO_INVALIDA)
                 {
-                    printf("A posição é inválida! ");
+                    printf("Posição inválida \n");
+                    break;
                 }
-                else if (ret == TAMANHO_INVALIDO)
-                {
-                    printf("O tamanho não pode ser menor que 1!");
-                }else if(ret == SUCESSO){
-                    printf("Estrutura criada com sucesso!");
-                }
+            }
+
+            //case 8: 
+            // int qtd, count = 1;
+            //     for (int i = 1; i <= TAM; i++)
+            //     {
+            //        qtd = getQuantidadeElementosEstruturaAuxiliar(i); 
+
+            //        if(qtd == SUCESSO){
+            //         count += qtd;
+            //        }
+            //     }
+
+            //     int * vetorAux = malloc(count * sizeof(int));
+
+            //     if(vetorAux == NULL){
+            //         printf("Não tem espaço na memória para criar o vetorAux");
+            //         break;
+            //     }
+
+
+            // break;
                 
-            break;
+        case 10:
+            int novoTamanho;
+
+            printf("Posição e novo Tamanho: \n");
+            scanf("%d %d", &posicao, &novoTamanho);
+
+            ret = modificarTamanhoEstruturaAuxiliar(posicao, novoTamanho);
+
+            if(ret == SUCESSO){
+                printf("Sucesso \n");
+                break;
+            }else if(ret == SEM_ESTRUTURA_AUXILIAR){
+                printf("Sem estrutura \n");
+                break;
+            }else if(ret == ESTRUTURA_AUXILIAR_VAZIA){
+                printf("Estrutura vazia \n");
+                break;
+            }else if(ret == POSICAO_INVALIDA){
+                printf("Posição inválida \n");
+                break;
+            }else if(ret == NOVO_TAMANHO_INVALIDO){
+                printf("O novo tamanho é inválido");
+                break;
+            }
 
         default:
         {
@@ -166,3 +333,14 @@ int main()
 
     return 0;
 }
+/*
+    if(ret == SUCESSO){
+                printf("Sucesso \n");
+            }else if(ret == SEM_ESTRUTURA_AUXILIAR){
+                printf("Sem estrutura \n");
+            }else if(ret == ESTRUTURA_AUXILIAR_VAZIA){
+                printf("Estrutura vazia \n");
+            }else if(ret == POSICAO_INVALIDA){
+                printf("Posição inválida \n");
+            }
+*/

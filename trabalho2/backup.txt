@@ -55,7 +55,7 @@ int criarEstruturaAuxiliar(int posicao, int tamanho)
             p[0] = tamanho;
 
             vetorPrincipal[posicao] = p;
-            // howMuchAssigned[posicao]++;
+            howMuchAssigned[posicao]++;
             retorno = SUCESSO;
         }
     }
@@ -91,7 +91,7 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
         if (existeEstruturaAuxiliar)
         {
             int *p = vetorPrincipal[posicao];
-            temEspaco = howMuchAssigned[posicao] < p[0] ? 1 : 0;
+            temEspaco = howMuchAssigned[posicao] - p[0] == 0 ? 0 : 1;
             if (temEspaco)
             {
                 // insere
@@ -143,9 +143,9 @@ int excluirNumeroDoFinaldaEstrutura(int posicao)
     }
     else
     {
-        // int *p = vetorPrincipal[posicao];
+        int *p = vetorPrincipal[posicao];
 
-        // p[howMuchAssigned[posicao]] = 0;
+        p[howMuchAssigned[posicao]] = 0;
         howMuchAssigned[posicao]--;
     }
 
@@ -189,7 +189,7 @@ int excluirNumeroEspecificoDeEstrutura(int posicao, int valor)
         int *p = vetorPrincipal[posicao];
         int limit = howMuchAssigned[posicao];
 
-        for (int i = 1; i <= limit; i++)
+        for (int i = 1; i < limit; i++)
         {
             if (control == 1)
             {
@@ -268,6 +268,7 @@ int getDadosEstruturaAuxiliar(int posicao, int vetorAux[])
     else
     {
         p = vetorPrincipal[posicao];
+        
         for (int i = 1; i <= howMuchAssigned[posicao]; i++)
         {
             vetorAux[i - 1] = p[i];
@@ -304,11 +305,11 @@ int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[])
     else
     {
         p = vetorPrincipal[posicao];
-        for (int i = 1; i <= howMuchAssigned[posicao]; i++)
+        for (int i = 1; i < howMuchAssigned[posicao]; i++)
         {
             vetorAux[i - 1] = p[i];
         }
-        qsort(vetorAux, howMuchAssigned[posicao], sizeof(int), compare_ints);
+        qsort(vetorAux, howMuchAssigned[posicao] - 1, sizeof(int), compare_ints);
     }
 
     return retorno;
@@ -332,7 +333,7 @@ int getDadosDeTodasEstruturasAuxiliares(int vetorAux[])
     {
         int *p = vetorPrincipal[i];
 
-        if (vetorPrincipal[i] == NULL || howMuchAssigned[i] == 0)
+        if (vetorPrincipal[i] == NULL)
         {
             control++;
         }
@@ -386,18 +387,19 @@ int getDadosOrdenadosDeTodasEstruturasAuxiliares(int vetorAux[])
                 k++;
                 j++;
             }
+        }
 
-            j = 1;
+        if (control == 10)
+        {
+            retorno = TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
+        }
+        else
+        {
+
+            qsort(vetorAux, k - 1, sizeof(int), compare_ints);
         }
     }
-    if (control == 10)
-    {
-        retorno = TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
-    }
-    else
-    {
-        qsort(vetorAux, k, sizeof(int), compare_ints);
-    }
+
     return retorno;
 }
 
@@ -417,7 +419,7 @@ int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho)
     int retorno = SUCESSO;
     posicao--;
 
-    if (ehPosicaoValida(posicao) != SUCESSO)
+    if (ehPosicaoValida(posicao))
     {
         retorno = POSICAO_INVALIDA;
     }
@@ -523,10 +525,8 @@ Retorno (No*)
 No *montarListaEncadeadaComCabecote()
 {
     int isHeadFound = 0;
-    No *head = malloc(sizeof(No));
-    head->prox = NULL;
-    No *prox = malloc(sizeof(No));
-    int control;
+    No *head = NULL;
+    No *prox = NULL;
 
     for (int i = 0; i < TAM; i++)
     {
@@ -541,19 +541,16 @@ No *montarListaEncadeadaComCabecote()
                     head->prox = NULL;
                     prox = head;
                     isHeadFound = 1;
-                    control = 2;
                 }
 
-                for (int j = control; j <= howMuchAssigned[i]; j++)
+                for (int j = 2; j <= howMuchAssigned[i]; j++)
                 {
-                    No *newNode = malloc(sizeof(No));
+                    No *newNode = NULL;
                     newNode->conteudo = p[j];
                     newNode->prox = NULL;
                     prox->prox = newNode;
                     prox = newNode;
                 }
-
-                control = 1;
             }
         }
     }
@@ -577,7 +574,7 @@ void getDadosListaEncadeadaComCabecote(No *inicio, int vetorAux[])
     No *validator = inicio;
     int i = 0;
 
-    while (validator)
+    while (validator->prox)
     {
         vetorAux[i] = validator->conteudo;
         validator = validator->prox;
@@ -595,15 +592,17 @@ Retorno
 void destruirListaEncadeadaComCabecote(No **inicio)
 {
     No *validator = *inicio;
+    No *nextNode = validator->prox;
 
-    while (validator)
+    while (nextNode)
     {
-        No *nextNode = validator->prox;
         free(validator);
+        validator = NULL;
         validator = nextNode;
+        nextNode = nextNode->prox;
     }
 
-    *inicio = NULL;
+    inicio = NULL;
 }
 
 /*
@@ -628,7 +627,7 @@ para poder liberar todos os espaços de memória das estruturas auxiliares.
 
 void finalizar()
 {
-    for (int i = 0; i < TAM; i++)
+    for (size_t i = 0; i < TAM; i++)
     {
         int *p = vetorPrincipal[i];
         int limit = howMuchAssigned[i];
@@ -641,13 +640,8 @@ void finalizar()
                 howMuchAssigned[i]--;
             }
 
-        }
-
-        if (vetorPrincipal[i] != NULL)
-        {
             free(vetorPrincipal[i]);
         }
-        
     }
 }
 

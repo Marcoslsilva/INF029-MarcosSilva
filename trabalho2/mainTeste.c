@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "trabalho2.h"
-#include "trabalho2.c"
+// #include "trabalho2.c"
 
 void show_log(char *str);
 
@@ -19,18 +19,18 @@ void testeListaEncadeada();
 int main()
 {
     inicializar();
-    testeInserirSemNada();
-    testeCriarEstrutura();
-    testeInserirComEstrutura();
-    testeExcluir();
-    testeExcluirNumeroEspecifico();
-    testeListar();
-    testeRetornarTodosNumeros();
+    testeInserirSemNada(); //
+    testeCriarEstrutura(); //
+    testeInserirComEstrutura(); //
+    testeExcluir();//
+    testeExcluirNumeroEspecifico(); //
+    testeListar();//
+    testeRetornarTodosNumeros(); //
     testeMudarTamanhoEstrutura();
     testeListaEncadeada();
-    finalizar();
+    // finalizar();
 }
-int ligado = 0;
+int ligado = 1;
 void show_log(char *str)
 {
     if (ligado)
@@ -177,16 +177,16 @@ void testeRetornarTodosNumeros()
     printf("%d\n", vet[2] == 0);
     printf("%d\n", vet[3] == 1);
     printf("%d\n", vet[4] == 34);
-    printf("%d\n", vet[5] == 12);
-    printf("%d\n", vet[6] == 6);
-    printf("%d\n", vet[7] == 27);
-    printf("%d\n", vet[8] == -6);
+    printf("%d\n", vet[5] == 12);//
+    printf("%d\n", vet[6] == 6);//
+    printf("%d\n", vet[7] == 27);//
+    printf("%d\n", vet[8] == -6);//
 
-    int vet2[9];
+    int vet2[9];//
 
-    printf("%d\n", getDadosOrdenadosDeTodasEstruturasAuxiliares(vet2) == SUCESSO);
+    printf("%d\n", getDadosOrdenadosDeTodasEstruturasAuxiliares(vet2) == SUCESSO);//
 
-    printf("%d\n", vet2[0] == -6);
+    printf("%d\n", vet2[0] == -6);//
     printf("%d\n", vet2[1] == 0);
     printf("%d\n", vet2[2] == 1);
     printf("%d\n", vet2[3] == 3);
@@ -207,6 +207,8 @@ void testeRetornarTodosNumeros()
     printf("%d\n", vet[6] == 6);
     printf("%d\n", vet[7] == 27);
     printf("%d\n", vet[8] == -6);
+
+    //42 printfs
 }
 /*
 2 [3,8,0]
